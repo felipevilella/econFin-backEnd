@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  redis:
+    image: bitnami/redis:7.4.0
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/bitnami/redis/data
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: econ-fin
+      POSTGRES_PASSWORD: econ@2024
+      POSTGRES_DB: ECON_FIN
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  redis_data:
+    driver: local
+  pgdata:
+    driver: local
