@@ -1,0 +1,26 @@
+{
+    "javascript.suggest.autoImports": true,
+    "javascript.suggestionActions.enabled": true,
+    "typescript.suggest.autoImports": true,
+    "typescript.suggestionActions.enabled": true,
+    "editor.formatOnSave": true,
+    "eslint.format.enable": true,
+    "editor.autoClosingBrackets": "always",
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact"
+    ],
+    "[javascript]": {
+      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+  }
+  
