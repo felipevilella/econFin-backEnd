@@ -4,6 +4,7 @@ export enum PROVIDER_SOCIAL_LOGIN {
   GOOGLE = "GOOGLE",
   APPLE = "APPLE",
   FACEBOOK = "FACEBOOK",
+  PLATFORM = "PLATFORM",
 }
 
 export enum TYPE_USER {
@@ -19,6 +20,12 @@ export class Users {
   @Column({ nullable: false})
   name: string;
 
+  @Column({ nullable: false})
+  email: string;
+
+  @Column({ nullable: false})
+  password: string;
+
   @Column({ nullable: true})
   image: string;
 
@@ -31,7 +38,7 @@ export class Users {
   @Column({
     type: "enum",
     enum: PROVIDER_SOCIAL_LOGIN,
-    default: PROVIDER_SOCIAL_LOGIN.GOOGLE
+    default:PROVIDER_SOCIAL_LOGIN.PLATFORM
   })
   provider: PROVIDER_SOCIAL_LOGIN;
 
