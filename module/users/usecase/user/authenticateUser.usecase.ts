@@ -47,6 +47,13 @@ export class AuthenticateUserUseCase {
 
   async execute(data: AuthenticateUser): Promise<IResponseAuthenticateUser> {
     const user = await this.usersRepository.getUserByEmail(data.email);
+
+    if (!user) {
+      throw new UnauthorizedException(
+        "Invalid email or password. Please check your credentials and try again.",
+      );
+    }
+
     await this.validatePassword(data.password, user.password, user.salt);
 
     const token = await this.generateToken(user);
