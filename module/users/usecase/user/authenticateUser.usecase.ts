@@ -17,10 +17,6 @@ export class AuthenticateUserUseCase {
     storageHash: string,
     salt: string,
   ): Promise<void> {
-    console.log(password);
-    console.log(storageHash);
-    console.log(salt);
-
     const argon2Helper = new Pbkdf2Helper();
     const hasValidatePassword = await argon2Helper.validatePassword(
       password,
