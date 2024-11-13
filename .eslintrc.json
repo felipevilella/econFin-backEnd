@@ -1,53 +1,54 @@
 {
-    "env": {
-      "es2021": true,
-      "node": true,
-      "jest": true
-    },
-    "extends": [
-      "standard-with-typescript",
-      "standard",
-      "prettier",
-      "prettier/prettier",
-      "plugin:prettier/recommended"
-    ],
-    "parserOptions": {
-      "ecmaVersion": "latest",
-      "sourceType": "module"
-    },
-    "plugins": [
-      "simple-import-sort",
-      "eslint-plugin-import-helpers"
-    ],
-    "rules": {
-      "simple-import-sort/imports": "warn",
-      "simple-import-sort/exports": "error",
-      "sonarjs/cognitive-complexity": "error",
-      "sonarjs/no-identical-expressions": "error",
-      "no-useless-constructor": "off",
-      "@typescript-eslint/strict-boolean-expressions": "off",
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-non-null-assertion": "off",
-      "@typescript-eslint/no-floating-promises": "error",
-      "import-helpers/order-imports": [
-        "warn",
-        {
-          "newlinesBetween": "always",
-          "groups": [
-            "/^node/",
-            "module",
-            "/^~//",
-            [
-              "parent",
-              "sibling",
-              "index"
-            ]
-          ],
-          "alphabetize": {
-            "order": "asc",
-            "ignoreCase": true
-          }
+  "env": {
+    "es2021": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "standard-with-typescript",
+    "standard",
+    "prettier",
+    "prettier/prettier",
+    "plugin:prettier/recommended"
+  ],
+  
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module" 
+  },
+  "plugins": [
+    "simple-import-sort",
+    "eslint-plugin-import-helpers"
+  ],
+  "rules": {
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "error",
+    "sonarjs/cognitive-complexity": "error",
+    "sonarjs/no-identical-expressions": "error",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-floating-promises": "error",
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          "/^node/",
+          "module",
+          "/^~//",
+          [
+            "parent",
+            "sibling",
+            "index"
+          ]
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
         }
-      ]
-    }
+      }
+    ]
   }
+}

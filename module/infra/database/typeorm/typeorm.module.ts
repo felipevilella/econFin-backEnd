@@ -1,15 +1,13 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { EnvironmentConfigService } from '../config/environment-config.service';
-import { EnvironmentConfigModule } from '../config/environment-config.module';
-import { config } from 'process';
-
+import { Module } from "@nestjs/common";
+import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { EnvironmentConfigService } from "../config/environment-config.service";
+import { EnvironmentConfigModule } from "../config/environment-config.module";
 
 export const getTypeOrmModuleOptions = (
   config: EnvironmentConfigService,
 ): TypeOrmModuleOptions =>
   ({
-    type: 'postgres',
+    type: "postgres",
     host: config.getDatabaseHost(),
     port: config.getDatabasePort(),
     username: config.getDatabaseUser(),
@@ -18,10 +16,9 @@ export const getTypeOrmModuleOptions = (
     autoLoadEntities: true,
     synchronize: true,
     migrationsRun: true,
-    entities: [__dirname + '/entities/**/*.entity{.ts,.js}'],
-    migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
-  } as TypeOrmModuleOptions);
-
+    entities: [__dirname + "/entities/**/*.entity{.ts,.js}"],
+    migrations: [__dirname + "/migrations/**/*{.ts,.js}"],
+  }) as TypeOrmModuleOptions;
 
 @Module({
   imports: [

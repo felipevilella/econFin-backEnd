@@ -6,7 +6,7 @@ import {
   CreateUser,
   IUsersRepository,
 } from "module/users/repositories/users.repository.interface";
-import { IResultUser } from "module/users/dto/user.dto";
+import { UserDto } from "module/users/dto/user.dto";
 
 @Injectable()
 export class UsersRepository implements IUsersRepository {
@@ -15,9 +15,14 @@ export class UsersRepository implements IUsersRepository {
     private readonly userRepository: Repository<Users>,
   ) {}
 
-  async create(user: CreateUser): Promise<IResultUser> {
+  async getUserByEmail(email: string): Promise<UserDto> {
+    return await this.userRepository.findOneBy({ email });
+  }
+
+  async createUser(user: CreateUser): Promise<UserDto> {
     try {
-      return this.userRepository.save(user);
+      const newUser = this.userRepository.create(user);
+      return await this.userRepository.save(newUser);
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException("Failed to create user");
