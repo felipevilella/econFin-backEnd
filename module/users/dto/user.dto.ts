@@ -17,9 +17,10 @@ export interface CreateUserDto {
   image?: string;
   provider: PROVIDER_SOCIAL_LOGIN;
   type: TYPE_USER;
+  salt: string;
 }
 
-export interface IResultUser {
+export interface UserDto {
   id: string;
   name: string;
   email: string;
@@ -27,6 +28,7 @@ export interface IResultUser {
   image?: string;
   isActive: boolean;
   externalId?: string;
+  salt: string;
   provider: PROVIDER_SOCIAL_LOGIN;
   type: TYPE_USER;
   createdDate: Date;
@@ -60,4 +62,26 @@ export class CreateUserDto {
     message: "Type must be either PRINCIPAL or SECONDARY",
   })
   type: TYPE_USER;
+}
+
+export class AuthenticateUser {
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(8, {
+    message: "Password must be at least 8 characters long",
+  })
+  password: string;
+}
+
+export interface AuthenticateUserDto {
+  name: string;
+  email: string;
+  password: string;
+  image?: string;
+  provider: PROVIDER_SOCIAL_LOGIN;
+  type: TYPE_USER;
+  salt: string;
 }

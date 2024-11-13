@@ -2,7 +2,7 @@ import {
   PROVIDER_SOCIAL_LOGIN,
   TYPE_USER,
 } from "module/infra/entities/users.entity";
-import { IResultUser } from "../dto/user.dto";
+import { UserDto } from "../dto/user.dto";
 
 export interface CreateUser {
   name: string;
@@ -12,8 +12,10 @@ export interface CreateUser {
   externalId?: string;
   provider: PROVIDER_SOCIAL_LOGIN;
   type: TYPE_USER;
+  salt: string;
 }
 
 export interface IUsersRepository {
-  create(user: CreateUser): Promise<IResultUser>;
+  createUser(user: CreateUser): Promise<UserDto>;
+  getUserByEmail(email: string): Promise<UserDto>;
 }

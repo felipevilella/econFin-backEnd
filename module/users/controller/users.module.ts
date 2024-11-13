@@ -1,22 +1,11 @@
 import { Module } from "@nestjs/common";
 import { UserController } from "./user.controller";
-import { CreateUserController } from "./createUser.controller";
-import { CreateUserUseCase } from "../usecase/createUser.usecase";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Users } from "module/infra/entities/users.entity";
+import { UseCaseProxyModule } from "module/infra/usecase-proxy/usecase-proxy.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Users])],
-  providers: [CreateUserUseCase],
-  exports: [CreateUserUseCase],
-  controllers: [UserController, CreateUserController],
+  imports: [TypeOrmModule.forFeature([Users]), UseCaseProxyModule.register()],
+  controllers: [UserController],
 })
 export class UsersModule {}
-
-// @Module({
-//   imports: [TypeOrmModule.forFeature([UserEntity])],
-//   providers: [UsersService],
-//   exports: [UsersService],
-//   controllers: [UsersController],
-// })
-// export class UsersModule {}
