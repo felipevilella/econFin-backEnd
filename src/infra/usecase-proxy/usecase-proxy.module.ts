@@ -8,6 +8,7 @@ import { UsersRepository } from "../repositories/users.repository";
 import { AuthService } from "src/module/auth/services/auth.service";
 import { CreateUserService } from "src/module/users/services/create-user.service";
 import { CreateFinancialDivisionService } from "src/module/users/services/create-financial-division.service";
+import { AccountRepository } from "../repositories/accounts.repository";
 
 @Module({
   imports: [EnvironmentConfigModule, RepositoriesModule],
@@ -22,10 +23,15 @@ export class UseCaseProxyModule {
       module: UseCaseProxyModule,
       providers: [
         {
-          inject: [UsersRepository],
+          inject: [UsersRepository, AccountRepository],
           provide: UseCaseProxyModule.CREATE_USER_SERVICE,
-          useFactory: (userRepository: UsersRepository) =>
-            new UseCaseProxy(new CreateUserService(userRepository)),
+          useFactory: (
+            userRepository: UsersRepository,
+            accountRepository: AccountRepository,
+          ) =>
+            new UseCaseProxy(
+              new CreateUserService(userRepository, accountRepository),
+            ),
         },
         {
           inject: [UsersRepository],

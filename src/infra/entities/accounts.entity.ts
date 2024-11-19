@@ -14,14 +14,14 @@ export class Accounts {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ nullable: false })
-  name: string;
-
-  @Column({ nullable: false })
-  total: number;
+  @Column({ nullable: true })
+  total: string;
 
   @Column({ nullable: false })
   userId: string;
+
+  @Column({ nullable: false })
+  securityKey: string;
 
   @ManyToOne(() => Users, { onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
