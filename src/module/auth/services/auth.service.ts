@@ -36,7 +36,7 @@ export class AuthService {
 
   private async generateToken(user: UserDto): Promise<string> {
     const payload = {
-      user_id: user.id,
+      id: user.id,
       name: user.name,
       email: user.email,
     };

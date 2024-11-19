@@ -4,8 +4,10 @@ import { RepositoriesModule } from "../repositories/repositories.module";
 
 import { UseCaseProxy } from "./usecase-proxy";
 import { UsersRepository } from "../repositories/users.repository";
-import { CreateUserService } from "src/module/users/services/create-user.service";
+
 import { AuthService } from "src/module/auth/services/auth.service";
+import { CreateUserService } from "src/module/users/services/create-user.service";
+import { CreateFinancialDivisionService } from "src/module/users/services/create-financial-division.service";
 
 @Module({
   imports: [EnvironmentConfigModule, RepositoriesModule],
@@ -13,6 +15,7 @@ import { AuthService } from "src/module/auth/services/auth.service";
 export class UseCaseProxyModule {
   static CREATE_USER_SERVICE = "createUserService";
   static AUTHENTICATE_USER_SERVICE = "authService";
+  static CREATE_FINANCIAL_DIVISION_SERVICE = "createFinancialDivisionService";
 
   static register(): DynamicModule {
     return {
@@ -30,10 +33,19 @@ export class UseCaseProxyModule {
           useFactory: (userRepository: UsersRepository) =>
             new UseCaseProxy(new AuthService(userRepository)),
         },
+        {
+          inject: [UsersRepository],
+          provide: UseCaseProxyModule.CREATE_FINANCIAL_DIVISION_SERVICE,
+          useFactory: (userRepository: UsersRepository) =>
+            new UseCaseProxy(
+              new CreateFinancialDivisionService(userRepository),
+            ),
+        },
       ],
       exports: [
         UseCaseProxyModule.CREATE_USER_SERVICE,
         UseCaseProxyModule.AUTHENTICATE_USER_SERVICE,
+        UseCaseProxyModule.CREATE_FINANCIAL_DIVISION_SERVICE,
       ],
     };
   }

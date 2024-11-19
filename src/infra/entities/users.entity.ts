@@ -5,6 +5,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  JoinColumn,
+  ManyToOne,
 } from "typeorm";
 
 export enum PROVIDER_SOCIAL_LOGIN {
@@ -59,7 +61,11 @@ export class Users {
   })
   type: TYPE_USER;
 
-  @OneToMany(() => Users, (user) => user.id)
+  @Column({ nullable: true })
+  userId: string;
+
+  @ManyToOne(() => Users, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "userId" })
   user: Users;
 
   @CreateDateColumn()

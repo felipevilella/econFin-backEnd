@@ -18,6 +18,7 @@ export interface CreateUserDto {
   provider: PROVIDER_SOCIAL_LOGIN;
   type: TYPE_USER;
   salt: string;
+  userId?: string;
 }
 
 export interface UserDto {
@@ -59,7 +60,7 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsEnum(TYPE_USER, {
-    message: "Type must be either PRINCIPAL or SECONDARY",
+    message: "Type must be either PRINCIPAL or FINANCE_DIVISION",
   })
   type: TYPE_USER;
 }
