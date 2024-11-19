@@ -1,11 +1,19 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Double, ManyToOne } from 'typeorm';
-import { Users } from './users.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
+import { Users } from "./users.entity";
 
 export enum BANK {
   ITAU = "ITAU",
   SANTANDER = "SANTANDER",
   NUBANK = "NUBANK",
-  INTER = "INTER"
+  INTER = "INTER",
 }
 
 export enum TYPE_USER {
@@ -13,15 +21,15 @@ export enum TYPE_USER {
   FINANCE_DIVISION = "FINANCE_DIVISION",
 }
 
-@Entity('cards')
+@Entity("cards")
 export class Cards {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ nullable: false})
+  @Column({ nullable: false })
   name: string;
 
-  @Column({ nullable: false})
+  @Column({ nullable: false })
   number: number;
 
   @Column({
@@ -30,16 +38,19 @@ export class Cards {
   })
   bank: BANK;
 
-  @Column({ nullable: false})
+  @Column({ nullable: false })
   limit: number;
 
-  @ManyToOne(() => Users, (user) => user.id)
-  user: Users
+  @Column({ nullable: false })
+  userId: string;
+
+  @ManyToOne(() => Users, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "userId" })
+  user: Users;
 
   @CreateDateColumn()
-  createdDate: Date
+  createdDate: Date;
 
   @UpdateDateColumn()
-  updatedDate: Date
-
+  updatedDate: Date;
 }

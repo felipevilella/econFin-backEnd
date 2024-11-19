@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import { Users } from "./users.entity";
 import { Cards } from "./cards.entity";
@@ -78,13 +79,25 @@ export class Transactions {
   @Column({ nullable: false })
   date: Date;
 
-  @ManyToOne(() => Users, (user) => user.id, { nullable: false })
+  @Column({ nullable: false })
+  userId: string;
+
+  @ManyToOne(() => Users, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "userId" })
   user: Users;
 
-  @ManyToOne(() => Cards, (card) => card.id, { nullable: true })
+  @Column({ nullable: false })
+  cardId: string;
+
+  @ManyToOne(() => Cards, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "cardId" })
   card: Cards;
 
-  @ManyToOne(() => Accounts, (account) => account.id, { nullable: true })
+  @Column({ nullable: false })
+  accountId: string;
+
+  @ManyToOne(() => Accounts, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "accountId" })
   account: Accounts;
 
   @CreateDateColumn()
