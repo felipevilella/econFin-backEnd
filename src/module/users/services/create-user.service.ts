@@ -1,7 +1,8 @@
-import { CreateUserDto, UserDto } from "../dto/user.dto";
+import { CreateUserDto, IResponseUserDto, UserDto } from "../dto/user.dto";
 import { UsersRepository } from "../../../infra/repositories/users.repository";
 import { BadRequestException } from "@nestjs/common";
 import Pbkdf2Helper, { IHashPassword } from "src/infra/helpers/pbkdf2.helper";
+import { UserMap } from "../mapper/user.mapper";
 
 export class CreateUserService {
   constructor(private usersRepository: UsersRepository) {}
@@ -26,7 +27,9 @@ export class CreateUserService {
     return this.usersRepository.createUser(user);
   }
 
-  async execute(user: CreateUserDto): Promise<UserDto> {
-    return await this.createUser(user);
+  async execute(user: CreateUserDto): Promise<IResponseUserDto> {
+    const result = await this.createUser(user);
+
+    return UserMap.toDTO(result);
   }
 }

@@ -1,8 +1,9 @@
-import { CreateUserDto, UserDto } from "../dto/user.dto";
+import { CreateUserDto, IResponseUserDto, UserDto } from "../dto/user.dto";
 import { UsersRepository } from "../../../infra/repositories/users.repository";
 import Pbkdf2Helper, { IHashPassword } from "src/infra/helpers/pbkdf2.helper";
 import { UserJWT } from "src/module/auth/dto/auth.dto";
 import { BadRequestException } from "@nestjs/common";
+import { UserMap } from "../mapper/user.mapper";
 
 export class CreateFinancialDivisionService {
   constructor(private usersRepository: UsersRepository) {}
@@ -32,7 +33,11 @@ export class CreateFinancialDivisionService {
     return this.usersRepository.createUser(createUser);
   }
 
-  async execute(createUser: CreateUserDto, user: UserJWT): Promise<UserDto> {
-    return await this.createUser(createUser, user);
+  async execute(
+    createUser: CreateUserDto,
+    user: UserJWT,
+  ): Promise<IResponseUserDto> {
+    const result = await this.createUser(createUser, user);
+    return UserMap.toDTO(result);
   }
 }

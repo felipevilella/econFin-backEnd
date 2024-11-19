@@ -86,3 +86,11 @@ export interface AuthenticateUserDto {
   type: TYPE_USER;
   salt: string;
 }
+
+export interface IResponseUserDto {
+  id: string;
+  email: string;
+  name: string;
+  provider: PROVIDER_SOCIAL_LOGIN;
+  image?: string;
+}
