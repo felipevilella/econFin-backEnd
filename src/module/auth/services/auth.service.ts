@@ -25,8 +25,6 @@ export class AuthService {
       salt,
     );
 
-    console.log(hasValidatePassword);
-
     if (!hasValidatePassword) {
       throw new UnauthorizedException(
         "Invalid email or password. Please check your credentials and try again.",
