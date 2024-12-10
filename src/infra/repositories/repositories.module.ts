@@ -7,13 +7,14 @@ import { Cards } from "../entities/cards.entity";
 import { Transactions } from "../entities/transactions.entity";
 import { UsersRepository } from "./users.repository";
 import { AccountRepository } from "./accounts.repository";
+import { TransactionsRepository } from "./transactions.repository";
 
 @Module({
   imports: [
     TypeOrmConfigModule,
     TypeOrmModule.forFeature([Users, Accounts, Cards, Transactions]),
   ],
-  providers: [UsersRepository, AccountRepository],
-  exports: [UsersRepository, AccountRepository],
+  providers: [UsersRepository, AccountRepository, TransactionsRepository],
+  exports: [UsersRepository, AccountRepository, TransactionsRepository],
 })
 export class RepositoriesModule {}

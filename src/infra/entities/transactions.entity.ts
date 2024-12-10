@@ -35,6 +35,7 @@ export enum TYPE {
   MECHANIC = "MECHANIC",
   LEISURE = "LEISURE",
   BILL = "BILL",
+  SALARY = "SALARY",
 }
 
 @Entity("transactions")
@@ -45,8 +46,14 @@ export class Transactions {
   @Column({ nullable: false })
   name: string;
 
-  @Column({ type: "float", nullable: false })
-  price: number;
+  @Column({ nullable: false })
+  price: string;
+
+  @Column({ nullable: true })
+  percentage: number;
+
+  @Column({ nullable: false })
+  securityKey: string;
 
   @Column({
     type: "enum",
@@ -82,11 +89,18 @@ export class Transactions {
   @Column({ nullable: false })
   userId: string;
 
+  @Column({ nullable: true })
+  userDivisionId: string;
+
   @ManyToOne(() => Users, { onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
   user: Users;
 
-  @Column({ nullable: false })
+  @ManyToOne(() => Users, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "userDivisionId" })
+  userDivision: Users;
+
+  @Column({ nullable: true })
   cardId: string;
 
   @ManyToOne(() => Cards, { onDelete: "CASCADE" })

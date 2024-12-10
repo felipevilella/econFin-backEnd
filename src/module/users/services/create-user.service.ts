@@ -37,11 +37,14 @@ export class CreateUserService {
 
     const createUser = await this.usersRepository.createUser(user);
     const encryption = await this.encryptionData("0");
+    const encryptionEstimative = await this.encryptionData("0");
 
     await this.accountRepository.createAccount({
       total: encryption.encryptedData,
       securityKey: encryption.securityKey,
       userId: createUser.id,
+      estimatedTotal: encryptionEstimative.encryptedData,
+      securityKeyEstimated: encryptionEstimative.securityKey,
     });
 
     return createUser;
