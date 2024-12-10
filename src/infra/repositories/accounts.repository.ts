@@ -3,13 +3,13 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Users } from "../entities/users.entity";
 import { Repository } from "typeorm";
 
+import { IAccountsRepository } from "src/repositories/accounts.repository.interface";
+import { Accounts } from "../entities/accounts.entity";
 import {
   AccountDto,
   createAccounts,
-  IAccountsRepository,
   updateAccountDTO,
-} from "src/repositories/accounts.repository.interface";
-import { Accounts } from "../entities/accounts.entity";
+} from "src/module/accounts/dto/accounts.dto";
 
 @Injectable()
 export class AccountRepository implements IAccountsRepository {

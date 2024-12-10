@@ -1,7 +1,3 @@
-import {
-  PROVIDER_SOCIAL_LOGIN,
-  TYPE_USER,
-} from "src/infra/entities/users.entity";
 import { UserDto } from "../module/users/dto/user.dto";
 import {
   METHOD_TYPE,
@@ -21,7 +17,6 @@ export interface CreateTransactions {
   date: Date;
   userId?: string;
   accountId?: string;
-  cardId?: string;
 }
 
 export interface TransactionsDTO {
@@ -36,7 +31,6 @@ export interface TransactionsDTO {
   date: Date;
   userId: string;
   percentage: number;
-  cardId: string;
   userDivision?: UserDto;
 }
 

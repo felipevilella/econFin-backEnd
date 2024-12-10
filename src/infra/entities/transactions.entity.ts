@@ -8,7 +8,6 @@ import {
   JoinColumn,
 } from "typeorm";
 import { Users } from "./users.entity";
-import { Cards } from "./cards.entity";
 import { Accounts } from "./accounts.entity";
 
 export enum MOVEMENT_TYPE {
@@ -36,6 +35,7 @@ export enum TYPE {
   LEISURE = "LEISURE",
   BILL = "BILL",
   SALARY = "SALARY",
+  CREDIT_CARD = "CREDIT_CARD",
 }
 
 @Entity("transactions")
@@ -99,13 +99,6 @@ export class Transactions {
   @ManyToOne(() => Users, { onDelete: "CASCADE" })
   @JoinColumn({ name: "userDivisionId" })
   userDivision: Users;
-
-  @Column({ nullable: true })
-  cardId: string;
-
-  @ManyToOne(() => Cards, { onDelete: "CASCADE" })
-  @JoinColumn({ name: "cardId" })
-  card: Cards;
 
   @Column({ nullable: false })
   accountId: string;
