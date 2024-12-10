@@ -6,15 +6,18 @@ import { UseCaseProxyModule } from "../infra/usecase-proxy/usecase-proxy.module"
 import { UserController } from "./users/user.controller";
 import { AuthModule } from "./auth/auth.module";
 import { AuthController } from "./auth/auth.controller";
+import { TransactionsModule } from "./transactions/trasactions.module";
+import { TransactionsController } from "./transactions/transactions.controller";
 
 @Module({
   imports: [
     UseCaseProxyModule.register(),
     UsersModule,
     AuthModule,
+    TransactionsModule,
     EnvironmentConfigModule,
     TypeOrmConfigModule,
   ],
-  controllers: [UserController, AuthController],
+  controllers: [UserController, AuthController, TransactionsController],
 })
 export class AppModule {}

@@ -15,7 +15,7 @@ class Pbkdf2Helper {
   };
 
   generateSalt() {
-    return crypto.randomBytes(16); // PBKDF2 typically uses 16 bytes for salt
+    return crypto.randomBytes(16);
   }
 
   async hashPassword(password: string): Promise<IHashPassword> {

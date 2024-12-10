@@ -9,6 +9,9 @@ import { AuthService } from "src/module/auth/services/auth.service";
 import { CreateUserService } from "src/module/users/services/create-user.service";
 import { CreateFinancialDivisionService } from "src/module/users/services/create-financial-division.service";
 import { AccountRepository } from "../repositories/accounts.repository";
+import { TransactionsRepository } from "../repositories/transactions.repository";
+import { FindTransactionsService } from "src/module/transactions/services/findTransactions.service";
+import { CreateOrUpdateTransactionService } from "src/module/transactions/services/createOrUpdateTransactions.service";
 
 @Module({
   imports: [EnvironmentConfigModule, RepositoriesModule],
@@ -17,6 +20,9 @@ export class UseCaseProxyModule {
   static CREATE_USER_SERVICE = "createUserService";
   static AUTHENTICATE_USER_SERVICE = "authService";
   static CREATE_FINANCIAL_DIVISION_SERVICE = "createFinancialDivisionService";
+  static CREATE_OR_UPDATE_TRANSACTIONS_SERVICE =
+    "CreateOrUpdateTransactionService";
+  static FIND_TRANSACTIONS_SERVICE = "findTransactionsService";
 
   static register(): DynamicModule {
     return {
@@ -47,11 +53,35 @@ export class UseCaseProxyModule {
               new CreateFinancialDivisionService(userRepository),
             ),
         },
+        {
+          inject: [AccountRepository, TransactionsRepository],
+          provide: UseCaseProxyModule.CREATE_OR_UPDATE_TRANSACTIONS_SERVICE,
+          useFactory: (
+            accountRepository: AccountRepository,
+            transactionsRepository: TransactionsRepository,
+          ) =>
+            new UseCaseProxy(
+              new CreateOrUpdateTransactionService(
+                accountRepository,
+                transactionsRepository,
+              ),
+            ),
+        },
+        {
+          inject: [TransactionsRepository],
+          provide: UseCaseProxyModule.FIND_TRANSACTIONS_SERVICE,
+          useFactory: (transactionsRepository: TransactionsRepository) =>
+            new UseCaseProxy(
+              new FindTransactionsService(transactionsRepository),
+            ),
+        },
       ],
       exports: [
         UseCaseProxyModule.CREATE_USER_SERVICE,
         UseCaseProxyModule.AUTHENTICATE_USER_SERVICE,
         UseCaseProxyModule.CREATE_FINANCIAL_DIVISION_SERVICE,
+        UseCaseProxyModule.CREATE_OR_UPDATE_TRANSACTIONS_SERVICE,
+        UseCaseProxyModule.FIND_TRANSACTIONS_SERVICE,
       ],
     };
   }

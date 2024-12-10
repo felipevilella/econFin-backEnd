@@ -1,15 +1,15 @@
 import { Module } from "@nestjs/common";
-import { UserController } from "./user.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Users } from "src/infra/entities/users.entity";
 import { UseCaseProxyModule } from "src/infra/usecase-proxy/usecase-proxy.module";
+import { Transactions } from "src/infra/entities/transactions.entity";
+import { TransactionsController } from "./transactions.controller";
 import { Accounts } from "src/infra/entities/accounts.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Users, Accounts]),
+    TypeOrmModule.forFeature([Transactions, Accounts]),
     UseCaseProxyModule.register(),
   ],
-  controllers: [UserController],
+  controllers: [TransactionsController],
 })
-export class UsersModule {}
+export class TransactionsModule {}

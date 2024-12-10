@@ -17,11 +17,17 @@ export class Accounts {
   @Column({ nullable: true })
   total: string;
 
+  @Column({ nullable: true })
+  estimatedTotal: string;
+
   @Column({ nullable: false })
   userId: string;
 
   @Column({ nullable: false })
   securityKey: string;
+
+  @Column({ nullable: true })
+  securityKeyEstimated: string;
 
   @ManyToOne(() => Users, { onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })

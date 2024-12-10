@@ -8,8 +8,8 @@ export interface EncryptedData {
 class Encryption {
   constructor() {}
 
-  private algorithm = `${process.env.ALGORITHM_KEY}`;
-  private key: Buffer = crypto.randomBytes(32);
+  private algorithm = process.env.ALGORITHM_KEY;
+  private key: Buffer = Buffer.from(process.env.SECRET_KEY, "hex");
   private securityKey: Buffer = crypto.randomBytes(16);
 
   async encrypt(text: string): Promise<EncryptedData> {
@@ -27,18 +27,23 @@ class Encryption {
     };
   }
 
-  async decrypt(encryptedData: EncryptedData): Promise<string> {
-    const { securityKey, encryptedData: data } = encryptedData;
+  async decrypt(data: EncryptedData): Promise<string> {
+    const { securityKey, encryptedData } = data;
 
-    const decipher = crypto.createDecipheriv(
-      this.algorithm,
-      this.key,
-      Buffer.from(securityKey, "hex"),
-    );
-    let decrypted = decipher.update(data, "hex", "utf8");
-    decrypted += decipher.final("utf8");
+    try {
+      const iv = Buffer.from(securityKey, "hex");
 
-    return decrypted;
+      const decipher = crypto.createDecipheriv(this.algorithm, this.key, iv);
+      let decrypted = decipher.update(encryptedData, "hex", "utf8");
+      decrypted += decipher.final("utf8");
+
+      return decrypted;
+    } catch (error) {
+      console.error("Decryption error:", error.message);
+      throw new Error(
+        "Failed to decrypt data. Check the encryption parameters.",
+      );
+    }
   }
 }
 

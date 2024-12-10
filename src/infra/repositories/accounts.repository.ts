@@ -4,8 +4,10 @@ import { Users } from "../entities/users.entity";
 import { Repository } from "typeorm";
 
 import {
+  AccountDto,
   createAccounts,
   IAccountsRepository,
+  updateAccountDTO,
 } from "src/repositories/accounts.repository.interface";
 import { Accounts } from "../entities/accounts.entity";
 
@@ -15,6 +17,17 @@ export class AccountRepository implements IAccountsRepository {
     @InjectRepository(Accounts)
     private readonly accountRepository: Repository<Accounts>,
   ) {}
+
+  async getAccountByUserId(userId: string): Promise<AccountDto> {
+    return await this.accountRepository.findOneBy({ userId });
+  }
+
+  async updateAccount(
+    accountId: string,
+    data: updateAccountDTO,
+  ): Promise<void> {
+    await this.accountRepository.update({ id: accountId }, data);
+  }
 
   async createAccount(account: createAccounts): Promise<void> {
     try {
