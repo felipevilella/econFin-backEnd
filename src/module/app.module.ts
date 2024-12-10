@@ -8,6 +8,8 @@ import { AuthModule } from "./auth/auth.module";
 import { AuthController } from "./auth/auth.controller";
 import { TransactionsModule } from "./transactions/trasactions.module";
 import { TransactionsController } from "./transactions/transactions.controller";
+import { AccountsModule } from "./accounts/accounts.module";
+import { AccountsController } from "./accounts/accounts.controller";
 
 @Module({
   imports: [
@@ -15,9 +17,15 @@ import { TransactionsController } from "./transactions/transactions.controller";
     UsersModule,
     AuthModule,
     TransactionsModule,
+    AccountsModule,
     EnvironmentConfigModule,
     TypeOrmConfigModule,
   ],
-  controllers: [UserController, AuthController, TransactionsController],
+  controllers: [
+    UserController,
+    AuthController,
+    TransactionsController,
+    AccountsController,
+  ],
 })
 export class AppModule {}

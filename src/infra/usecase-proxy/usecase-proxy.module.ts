@@ -12,6 +12,7 @@ import { AccountRepository } from "../repositories/accounts.repository";
 import { TransactionsRepository } from "../repositories/transactions.repository";
 import { FindTransactionsService } from "src/module/transactions/services/findTransactions.service";
 import { CreateOrUpdateTransactionService } from "src/module/transactions/services/createOrUpdateTransactions.service";
+import { getAccountService } from "src/module/accounts/services/getAccount.services";
 
 @Module({
   imports: [EnvironmentConfigModule, RepositoriesModule],
@@ -23,6 +24,7 @@ export class UseCaseProxyModule {
   static CREATE_OR_UPDATE_TRANSACTIONS_SERVICE =
     "CreateOrUpdateTransactionService";
   static FIND_TRANSACTIONS_SERVICE = "findTransactionsService";
+  static GET_ACCOUNT_SERVICE = "getAccountService";
 
   static register(): DynamicModule {
     return {
@@ -75,6 +77,12 @@ export class UseCaseProxyModule {
               new FindTransactionsService(transactionsRepository),
             ),
         },
+        {
+          inject: [AccountRepository],
+          provide: UseCaseProxyModule.GET_ACCOUNT_SERVICE,
+          useFactory: (accountRepository: AccountRepository) =>
+            new UseCaseProxy(new getAccountService(accountRepository)),
+        },
       ],
       exports: [
         UseCaseProxyModule.CREATE_USER_SERVICE,
@@ -82,6 +90,7 @@ export class UseCaseProxyModule {
         UseCaseProxyModule.CREATE_FINANCIAL_DIVISION_SERVICE,
         UseCaseProxyModule.CREATE_OR_UPDATE_TRANSACTIONS_SERVICE,
         UseCaseProxyModule.FIND_TRANSACTIONS_SERVICE,
+        UseCaseProxyModule.GET_ACCOUNT_SERVICE,
       ],
     };
   }

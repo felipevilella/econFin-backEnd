@@ -27,7 +27,6 @@ export interface CreateTransactions {
   userDivisionId?: string;
   userId?: string;
   accountId?: string;
-  cardId?: string;
   percentage?: number;
 }
 
@@ -71,10 +70,6 @@ export class CreateTransactionsDto {
   @IsDate()
   @Type(() => Date)
   date: Date;
-
-  @IsOptional()
-  @IsString()
-  creditCardId: string;
 
   @IsOptional()
   @IsString()

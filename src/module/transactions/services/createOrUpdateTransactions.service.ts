@@ -3,12 +3,12 @@ import Encryption, { EncryptedData } from "src/infra/helpers/encryption.helper";
 import { TransactionsRepository } from "src/infra/repositories/transactions.repository";
 
 import { UserJWT } from "src/module/auth/dto/auth.dto";
-import { AccountDto } from "src/repositories/accounts.repository.interface";
 import { MOVEMENT_TYPE, STATUS } from "src/infra/entities/transactions.entity";
 import {
   CreateTransactions,
   CreateTransactionsDto,
 } from "../dto/transaction.dto";
+import { AccountDto } from "src/module/accounts/dto/accounts.dto";
 
 interface ICalculateTransactions {
   total: number;
