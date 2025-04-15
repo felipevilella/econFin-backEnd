@@ -33,6 +33,7 @@ class TransactionsMap {
     status,
     percentage,
     userDivision,
+    userDivisionId,
     type,
   }: TransactionsDTO): ITransactionsMapDTO {
     const transaction = instanceToInstance({
@@ -45,6 +46,7 @@ class TransactionsMap {
       status,
       divisionName: userDivision?.name,
       divisionValue: percentage ? (percentage * Number(price)) / 100 : 0,
+      userDivisionId,
       percentage,
       type,
     });

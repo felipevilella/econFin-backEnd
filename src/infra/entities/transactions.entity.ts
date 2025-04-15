@@ -89,6 +89,9 @@ export class Transactions {
   @Column({ nullable: false })
   userId: string;
 
+  @Column({ nullable: false, default: false })
+  isFixed: boolean;
+
   @Column({ nullable: true })
   userDivisionId: string;
 

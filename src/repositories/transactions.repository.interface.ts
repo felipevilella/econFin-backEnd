@@ -32,11 +32,16 @@ export interface TransactionsDTO {
   userId: string;
   percentage: number;
   userDivision?: UserDto;
+  userDivisionId: string;
 }
 
 export interface ITransactionsRepository {
   createTransactions(transaction: CreateTransactions): Promise<void>;
   updateTransaction(id: string, transaction: CreateTransactions): Promise<void>;
-  getTransactionsByUserId(userId: string): Promise<TransactionsDTO[]>;
+  getTransactionsByUserId(
+    userId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<TransactionsDTO[]>;
   getTransactionsById(id: string): Promise<TransactionsDTO>;
 }

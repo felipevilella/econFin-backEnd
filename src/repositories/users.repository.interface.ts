@@ -18,4 +18,5 @@ export interface CreateUser {
 export interface IUsersRepository {
   createUser(user: CreateUser): Promise<UserDto>;
   getUserByEmail(email: string): Promise<UserDto>;
+  getUserDivision(userId: string): Promise<UserDto>;
 }

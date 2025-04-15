@@ -15,10 +15,9 @@ export class getAccountService {
   }
 
   private async findAccounts(userId: string): Promise<AccountDto> {
-    const transactions =
-      await this.accountRepository.getAccountByUserId(userId);
+    const account = await this.accountRepository.getAccountByUserId(userId);
 
-    return transactions;
+    return account;
   }
 
   private async getAccount(user: UserJWT): Promise<IAccountMapper> {

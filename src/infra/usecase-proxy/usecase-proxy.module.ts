@@ -13,6 +13,8 @@ import { TransactionsRepository } from "../repositories/transactions.repository"
 import { FindTransactionsService } from "src/module/transactions/services/findTransactions.service";
 import { CreateOrUpdateTransactionService } from "src/module/transactions/services/createOrUpdateTransactions.service";
 import { getAccountService } from "src/module/accounts/services/getAccount.services";
+import { PanelService } from "src/module/panel/services/panel.service";
+import { GetMonthlyTransactionsService } from "src/module/transactions/services/getMonthlyTransactions.service";
 
 @Module({
   imports: [EnvironmentConfigModule, RepositoriesModule],
@@ -25,6 +27,8 @@ export class UseCaseProxyModule {
     "CreateOrUpdateTransactionService";
   static FIND_TRANSACTIONS_SERVICE = "findTransactionsService";
   static GET_ACCOUNT_SERVICE = "getAccountService";
+  static PANEL_SERVICE = "panelService";
+  static GET_MONTHLY_TRANSACTIONS = "GetMonthlyTransactionsService";
 
   static register(): DynamicModule {
     return {
@@ -83,6 +87,40 @@ export class UseCaseProxyModule {
           useFactory: (accountRepository: AccountRepository) =>
             new UseCaseProxy(new getAccountService(accountRepository)),
         },
+        {
+          inject: [AccountRepository, TransactionsRepository, UsersRepository],
+          provide: UseCaseProxyModule.PANEL_SERVICE,
+
+          useFactory: (
+            accountRepository: AccountRepository,
+            transactionsRepository: TransactionsRepository,
+            usersRepository: UsersRepository,
+          ) =>
+            new UseCaseProxy(
+              new PanelService(
+                accountRepository,
+                transactionsRepository,
+                usersRepository,
+              ),
+            ),
+        },
+        {
+          inject: [AccountRepository, TransactionsRepository, UsersRepository],
+          provide: UseCaseProxyModule.GET_MONTHLY_TRANSACTIONS,
+
+          useFactory: (
+            accountRepository: AccountRepository,
+            transactionsRepository: TransactionsRepository,
+            usersRepository: UsersRepository,
+          ) =>
+            new UseCaseProxy(
+              new GetMonthlyTransactionsService(
+                accountRepository,
+                transactionsRepository,
+                usersRepository,
+              ),
+            ),
+        },
       ],
       exports: [
         UseCaseProxyModule.CREATE_USER_SERVICE,
@@ -91,6 +129,8 @@ export class UseCaseProxyModule {
         UseCaseProxyModule.CREATE_OR_UPDATE_TRANSACTIONS_SERVICE,
         UseCaseProxyModule.FIND_TRANSACTIONS_SERVICE,
         UseCaseProxyModule.GET_ACCOUNT_SERVICE,
+        UseCaseProxyModule.PANEL_SERVICE,
+        UseCaseProxyModule.GET_MONTHLY_TRANSACTIONS,
       ],
     };
   }

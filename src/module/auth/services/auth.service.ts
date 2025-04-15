@@ -4,8 +4,10 @@ import Pbkdf2Helper from "src/infra/helpers/pbkdf2.helper";
 import { UsersRepository } from "src/infra/repositories/users.repository";
 
 import { AuthenticateUser, UserDto } from "src/module/users/dto/user.dto";
+import { IUserMapDTO, UserMap } from "src/module/users/mapper/user.mapper";
 
 export interface IResponseAuthenticateUser {
+  user: IUserMapDTO;
   token: string;
 }
 
@@ -61,6 +63,6 @@ export class AuthService {
 
     const token = await this.generateToken(user);
 
-    return { token: token };
+    return { user: UserMap.toDTO(user), token: token };
   }
 }

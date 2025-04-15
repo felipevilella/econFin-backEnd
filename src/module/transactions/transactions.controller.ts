@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Request,
   UseGuards,
   UsePipes,
@@ -21,6 +22,7 @@ import { UseCaseProxy } from "src/infra/usecase-proxy/usecase-proxy";
 import { UseCaseProxyModule } from "src/infra/usecase-proxy/usecase-proxy.module";
 import { FindTransactionsService } from "./services/findTransactions.service";
 import { CreateOrUpdateTransactionService } from "./services/createOrUpdateTransactions.service";
+import { GetMonthlyTransactionsService } from "./services/getMonthlyTransactions.service";
 
 @Controller("transaction")
 export class TransactionsController {
@@ -29,6 +31,8 @@ export class TransactionsController {
     private readonly CreateOrUpdateTransactionService: UseCaseProxy<CreateOrUpdateTransactionService>,
     @Inject(UseCaseProxyModule.FIND_TRANSACTIONS_SERVICE)
     private readonly findTransactionsService: UseCaseProxy<FindTransactionsService>,
+    @Inject(UseCaseProxyModule.GET_MONTHLY_TRANSACTIONS)
+    private readonly getMonthlyTransactionsService: UseCaseProxy<GetMonthlyTransactionsService>,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -61,6 +65,20 @@ export class TransactionsController {
       user,
       id,
     );
+  }
+
+  @UseGuards(AuthGuard)
+  @Get("/get-monthly-transactions")
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async getMonthlyTransactions(
+    @Query("date") date: string,
+    @Request() request: RequestDTO,
+  ) {
+    const { user } = request;
+
+    return await this.getMonthlyTransactionsService
+      .getInstance()
+      .execute(user, new Date(date));
   }
 
   @UseGuards(AuthGuard)
