@@ -2,7 +2,7 @@ import { instanceToInstance } from "class-transformer";
 import { PROVIDER_SOCIAL_LOGIN } from "src/infra/entities/users.entity";
 import { UserDto } from "../dto/user.dto";
 
-interface IUserMapDTO {
+export interface IUserMapDTO {
   id: string;
   email: string;
   name: string;

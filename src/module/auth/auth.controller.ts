@@ -27,6 +27,7 @@ export class AuthController {
   ) {}
 
   @Post("signIn")
+  @HttpCode(HttpStatus.OK)
   @UsePipes(new ValidationPipe({ transform: true }))
   async signIn(
     @Body() authenticateUser: AuthenticateUser,

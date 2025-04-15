@@ -17,17 +17,31 @@ export class FindTransactionsService {
     return await encryption.decrypt(encryptedData);
   }
 
-  private async getTransactions(userId: string): Promise<TransactionsDTO[]> {
+  private async getTransactions(
+    userId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<TransactionsDTO[]> {
     const transactions =
-      await this.transactionsRepository.getTransactionsByUserId(userId);
+      await this.transactionsRepository.getTransactionsByUserId(
+        userId,
+        startDate,
+        endDate,
+      );
 
     return transactions;
   }
 
   private async FindTransactions(
     user: UserJWT,
+    startDate: Date,
+    endDate: Date,
   ): Promise<ITransactionsMapDTO[]> {
-    const transactions = await this.getTransactions(user.id);
+    const transactions = await this.getTransactions(
+      user.id,
+      startDate,
+      endDate,
+    );
     const transactionMap: ITransactionsMapDTO[] = [];
 
     transactions.map(async (transaction) => {
@@ -43,7 +57,16 @@ export class FindTransactionsService {
   }
 
   async execute(user: UserJWT): Promise<ITransactionsMapDTO[]> {
-    const transactions = await this.FindTransactions(user);
+    const startDate = new Date();
+    startDate.setDate(1);
+    startDate.setHours(0, 0, 0, 0);
+
+    const endDate = new Date(startDate);
+    endDate.setMonth(endDate.getMonth() + 1);
+    endDate.setDate(0);
+    endDate.setHours(23, 59, 59, 999);
+
+    const transactions = await this.FindTransactions(user, startDate, endDate);
 
     return transactions;
   }

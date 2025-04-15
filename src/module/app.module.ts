@@ -10,6 +10,8 @@ import { TransactionsModule } from "./transactions/trasactions.module";
 import { TransactionsController } from "./transactions/transactions.controller";
 import { AccountsModule } from "./accounts/accounts.module";
 import { AccountsController } from "./accounts/accounts.controller";
+import { PanelModule } from "./panel/panel.module";
+import { PanelController } from "./panel/panel.controller";
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { AccountsController } from "./accounts/accounts.controller";
     AuthModule,
     TransactionsModule,
     AccountsModule,
+    PanelModule,
     EnvironmentConfigModule,
     TypeOrmConfigModule,
   ],
@@ -26,6 +29,7 @@ import { AccountsController } from "./accounts/accounts.controller";
     AuthController,
     TransactionsController,
     AccountsController,
+    PanelController,
   ],
 })
 export class AppModule {}

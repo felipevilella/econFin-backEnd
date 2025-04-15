@@ -17,14 +17,22 @@ export class TransactionsRepository implements ITransactionsRepository {
     private readonly transactions: Repository<Transactions>,
   ) {}
 
-  async getTransactionsByUserId(userId: string): Promise<TransactionsDTO[]> {
-    const transaction = await this.transactions
+  async getTransactionsByUserId(
+    userId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<TransactionsDTO[]> {
+    const transactions = await this.transactions
       .createQueryBuilder("transaction")
       .leftJoinAndSelect("transaction.userDivision", "userDivision")
       .where("transaction.userId = :userId", { userId })
+      .andWhere("transaction.date BETWEEN :startDate AND :endDate", {
+        startDate,
+        endDate,
+      })
       .getMany();
 
-    return transaction;
+    return transactions;
   }
   async getTransactionsById(id: string): Promise<TransactionsDTO> {
     const transaction = await this.transactions
@@ -41,7 +49,7 @@ export class TransactionsRepository implements ITransactionsRepository {
       await this.transactions.save(newTransaction);
     } catch (error) {
       console.error(error);
-      throw new InternalServerErrorException("Failed to create account");
+      throw new InternalServerErrorException("Transaction to create account");
     }
   }
 
