@@ -26,6 +26,10 @@ export class EnvironmentConfigService implements DatabaseConfig {
     return this.configService.get<string>("DATABASE_NAME");
   }
 
+  getDatabaseUrl(): string {
+    return this.configService.get<string>("DATABASE_URL");
+  }
+
   getDatabaseSchema(): string {
     return this.configService.get<string>("DATABASE_SCHEMA");
   }

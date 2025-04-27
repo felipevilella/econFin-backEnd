@@ -8,11 +8,12 @@ export const getTypeOrmModuleOptions = (
 ): TypeOrmModuleOptions =>
   ({
     type: "postgres",
-    host: config.getDatabaseHost(),
-    port: config.getDatabasePort(),
-    username: config.getDatabaseUser(),
-    password: config.getDatabasePassword(),
-    database: config.getDatabaseName(),
+    // host: config.getDatabaseHost(),
+    // port: config.getDatabasePort(),
+    // username: config.getDatabaseUser(),
+    // password: config.getDatabasePassword(),
+    // database: config.getDatabaseName(),
+    url: config.getDatabaseUrl(),
     autoLoadEntities: true,
     synchronize: true,
     migrationsRun: true,
