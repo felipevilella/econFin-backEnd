@@ -9,6 +9,8 @@ import {
   CreateTransactionsDto,
 } from "../dto/transaction.dto";
 import { AccountDto } from "src/module/accounts/dto/accounts.dto";
+import { add, addMonths } from "date-fns";
+import { TransactionsDTO } from "src/repositories/transactions.repository.interface";
 
 interface ICalculateTransactions {
   total: number;
@@ -43,6 +45,15 @@ export class CreateOrUpdateTransactionService {
     const account = await this.accountRepository.getAccountByUserId(userId);
 
     return account;
+  }
+
+  private async getTransaction(
+    transactionId: string,
+  ): Promise<TransactionsDTO> {
+    const transaction =
+      await this.transactionsRepository.getTransactionsById(transactionId);
+
+    return transaction;
   }
 
   private async updateAccount(data: IUpdateAccount): Promise<void> {
@@ -94,6 +105,7 @@ export class CreateOrUpdateTransactionService {
         : Number(transaction.price);
 
       const priceAdjustment = isEntry ? price : -price;
+
       if (transaction.status === STATUS.PAID) {
         totalAccount = totalAccount.toString()
           ? totalAccount + priceAdjustment
@@ -108,12 +120,27 @@ export class CreateOrUpdateTransactionService {
     return { total: totalAccount, estimatedTotal: estimatedTotalAccount };
   }
 
-  private async createTransactions(transaction: CreateTransactions) {
-    await this.transactionsRepository.createTransactions(transaction);
+  private async createTransactions(
+    transaction: CreateTransactions,
+  ): Promise<TransactionsDTO> {
+    const result =
+      await this.transactionsRepository.createTransactions(transaction);
+
+    return result;
   }
 
   private async updateTransaction(id: string, transaction: CreateTransactions) {
     await this.transactionsRepository.updateTransaction(id, transaction);
+  }
+
+  private async updateFutureTransaction(
+    transactionId: string,
+    transaction: CreateTransactions,
+  ) {
+    await this.transactionsRepository.updateFutureTransaction(
+      transactionId,
+      transaction,
+    );
   }
 
   private async saveTransactions(
@@ -122,17 +149,10 @@ export class CreateOrUpdateTransactionService {
     id?: string,
   ): Promise<void> {
     const account = await this.getAccount(user.id);
-
     const calculateTransactions = await this.calculateTransactions(
       account,
       transaction,
     );
-
-    await this.updateAccount({
-      accountId: account.id,
-      estimatedTotal: calculateTransactions.estimatedTotal,
-      total: calculateTransactions.total,
-    });
 
     const encryptPriceTransactions = await this.encryptionData(
       transaction.price.toString(),
@@ -144,9 +164,65 @@ export class CreateOrUpdateTransactionService {
     transaction.securityKey = encryptPriceTransactions.securityKey;
 
     if (id) {
+      const lastTransaction = await this.getTransaction(id);
+
+      let price = Number(
+        await this.decryptData({
+          encryptedData: lastTransaction.price,
+          securityKey: lastTransaction.securityKey,
+        }),
+      );
+
+      await this.updateAccount({
+        accountId: account.id,
+        estimatedTotal:
+          transaction.status === STATUS.PENDENT
+            ? calculateTransactions.estimatedTotal - price
+            : calculateTransactions.estimatedTotal,
+        total:
+          transaction.status === STATUS.PAID
+            ? calculateTransactions.total - price
+            : calculateTransactions.total,
+      });
+
       await this.updateTransaction(id, transaction);
+
+      if (lastTransaction.transactionId) {
+        await this.updateFutureTransaction(id, transaction);
+      }
     } else {
-      await this.createTransactions(transaction);
+      await this.updateAccount({
+        accountId: account.id,
+        estimatedTotal: calculateTransactions.estimatedTotal,
+        total: calculateTransactions.total,
+      });
+
+      transaction.date = new Date(transaction.date);
+      transaction.date = add(transaction.date, { hours: 3 });
+
+      const result = await this.createTransactions(transaction);
+      const baseDate = new Date(transaction.date);
+
+      if (transaction.isFixed) {
+        transaction.transactionId = result.id;
+
+        Array.from({ length: 30 }).forEach(async (_, index) => {
+          const newDate = addMonths(baseDate, index + 1);
+
+          await this.updateAccount({
+            accountId: account.id,
+            estimatedTotal:
+              calculateTransactions.estimatedTotal + Number(transaction.price),
+            total: calculateTransactions.total,
+          });
+
+          await this.createTransactions({
+            ...transaction,
+            date: newDate,
+            status: STATUS.PENDENT,
+          });
+        });
+      }
     }
   }
 

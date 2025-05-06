@@ -97,14 +97,14 @@ export class GetMonthlyTransactionsService {
     userId: string,
     date: Date,
   ): Promise<ITransactionsMapDTO[]> {
-    const startDate = new Date(date);
-    startDate.setDate(1);
-    startDate.setHours(0, 0, 0, 0);
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth();
 
-    const endDate = new Date(startDate);
-    endDate.setMonth(startDate.getMonth() + 1);
-    endDate.setDate(0);
-    endDate.setHours(23, 59, 59, 999);
+    const startDate = new Date(Date.UTC(year, month, 1, 0, 0, 0, 0));
+    const endDate = new Date(Date.UTC(year, month + 1, 1, 0, 0, 0, 0) - 1);
+
+    console.log(startDate);
+    console.log(endDate);
 
     const transactions =
       await this.transactionsRepository.getTransactionsByUserId(

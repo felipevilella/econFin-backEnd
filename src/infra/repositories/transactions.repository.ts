@@ -37,16 +37,17 @@ export class TransactionsRepository implements ITransactionsRepository {
   async getTransactionsById(id: string): Promise<TransactionsDTO> {
     const transaction = await this.transactions
       .createQueryBuilder("transaction")
-      .innerJoinAndSelect("transaction.userDivision", "user")
       .where("transaction.id = :id", { id })
       .getOne();
 
     return transaction;
   }
-  async createTransactions(transaction: CreateTransactions): Promise<void> {
+  async createTransactions(
+    transaction: CreateTransactions,
+  ): Promise<TransactionsDTO> {
     try {
       const newTransaction = this.transactions.create(transaction);
-      await this.transactions.save(newTransaction);
+      return await this.transactions.save(newTransaction);
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException("Transaction to create account");
@@ -59,6 +60,18 @@ export class TransactionsRepository implements ITransactionsRepository {
   ): Promise<void> {
     try {
       await this.transactions.update({ id }, transaction);
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException("Failed to create account");
+    }
+  }
+
+  async updateFutureTransaction(
+    id: string,
+    transaction: CreateTransactions,
+  ): Promise<void> {
+    try {
+      await this.transactions.update({ transactionId: id }, transaction);
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException("Failed to create account");

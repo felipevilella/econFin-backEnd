@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
 import {
+  IsBoolean,
   IsDate,
   IsEnum,
   IsNotEmpty,
@@ -28,6 +29,8 @@ export interface CreateTransactions {
   userId?: string;
   accountId?: string;
   percentage?: number;
+  transactionId?: string;
+  isFixed: boolean;
 }
 
 export class CreateTransactionsDto {
@@ -82,4 +85,7 @@ export class CreateTransactionsDto {
   @IsOptional()
   @IsNumber()
   percentage: number;
+
+  @IsBoolean()
+  isFixed: boolean;
 }

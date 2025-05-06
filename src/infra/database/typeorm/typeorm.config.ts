@@ -15,8 +15,6 @@ const config = new DataSource({
   ssl: { rejectUnauthorized: false },
 });
 
-console.log(process.env);
-
 config
   .initialize()
   .then(() => {

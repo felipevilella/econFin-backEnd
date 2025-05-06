@@ -95,6 +95,13 @@ export class Transactions {
   @Column({ nullable: true })
   userDivisionId: string;
 
+  @Column({ nullable: true })
+  transactionId: string;
+
+  @ManyToOne(() => Transactions, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "transactionId" })
+  transaction: Transactions;
+
   @ManyToOne(() => Users, { onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
   user: Users;

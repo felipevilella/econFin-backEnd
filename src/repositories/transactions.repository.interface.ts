@@ -17,6 +17,7 @@ export interface CreateTransactions {
   date: Date;
   userId?: string;
   accountId?: string;
+  isFixed: boolean;
 }
 
 export interface TransactionsDTO {
@@ -33,10 +34,11 @@ export interface TransactionsDTO {
   percentage: number;
   userDivision?: UserDto;
   userDivisionId: string;
+  transactionId?: string;
 }
 
 export interface ITransactionsRepository {
-  createTransactions(transaction: CreateTransactions): Promise<void>;
+  createTransactions(transaction: CreateTransactions): Promise<TransactionsDTO>;
   updateTransaction(id: string, transaction: CreateTransactions): Promise<void>;
   getTransactionsByUserId(
     userId: string,
