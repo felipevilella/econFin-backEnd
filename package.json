@@ -32,11 +32,12 @@
     "argon2": "^0.41.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "currency.js": "^2.0.4",
+    "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "lint-staged": "^12.3.2",
     "pbkdf2": "^3.1.2",
     "pg": "^8.12.0",
-    "currency.js": "^2.0.4",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.20"
